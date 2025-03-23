@@ -1,2 +1,10 @@
 # Communicate-between-ESP32-and-cloud-Thingsboard
-In this project, we use microcontroller ESP32 to communicate with cloud Thingsboard by 3 protocols: MQTT, CoAP and HTTP.
+In this project, we use microcontroller ESP32 to communicate with cloud Thingsboard by 3 protocols: MQTT, CoAP and HTTP. We send temperature to Thingsboard by MQTT, humidity by CoAP and light by HTTP, and ESP32 will receive control commands for temperature and light from Thingsboard. When ESP32 is lost connection with Thingsboard, ESP32 will send data to computer by protocol HTTP and receive control commands from computer. Once the connection is restored, computer will send saved data to Thingsboard.
+
+1. You download all files of this project. Then, you have to unrar the file ArduinoJson.rar. 
+2. You log in to demo.thingsboard.io. Then, you create 3 new devices include "data", "getdata" and "controller_data". Next, you add relation between "data" and "getData".
+3. In item "Rule chains" of server Thingsboard, you upload the file root_rule_chain.json and take the root for it.
+4. You open file demo.ino in Arduino IDE. Then, you connect your computer to the wifi that is emitted by your phone. You replace my server to your server, replace my computer ip to yours, "accessToken" to your "data" access token, "controlToken" to your "getData" access token.
+5. You open the file controller.py. Then, you replace my server to your server, "ACCESS_TOKEN" to your "controller_data" access token.
+6. You connect pin 26 and 27 of ESP32 to LED, pin 26 for humidity and pin 27 for light.
+7. After the steps above, you compile demo.ino and take it to ESP32 and run controller.py. You will see your wifi on Arduino IDE screen, you choose the number of your wifi and type password to connect ESP32 to this wifi. You will see your data in device "data" on Thingsboard. To see what's happen when connection is lost, you turn off your mobile data, but keep turning on mobile hotspot, and you have to ensure that your computer is still connect with your wifi. You can see data is transfered to your computer. Then, you turn on your mobile data, and you will see your saved data in device "controller_data" in Thingsboard.
