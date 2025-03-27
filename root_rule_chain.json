@@ -1,0 +1,627 @@
+{
+  "ruleChain": {
+    "name": "Root Rule Chain",
+    "type": "CORE",
+    "firstRuleNodeId": null,
+    "root": false,
+    "debugMode": false,
+    "configuration": null,
+    "additionalInfo": null
+  },
+  "metadata": {
+    "version": 5,
+    "firstNodeIndex": 6,
+    "nodes": [
+      {
+        "type": "org.thingsboard.rule.engine.telemetry.TbMsgTimeseriesNode",
+        "name": "Save Timeseries",
+        "debugMode": false,
+        "singletonMode": false,
+        "queueName": null,
+        "configurationVersion": 0,
+        "configuration": {
+          "defaultTTL": 0
+        },
+        "additionalInfo": {
+          "layoutX": 824,
+          "layoutY": 156
+        }
+      },
+      {
+        "type": "org.thingsboard.rule.engine.telemetry.TbMsgAttributesNode",
+        "name": "Save Client Attributes",
+        "debugMode": false,
+        "singletonMode": false,
+        "queueName": null,
+        "configurationVersion": 2,
+        "configuration": {
+          "scope": "CLIENT_SCOPE",
+          "notifyDevice": false,
+          "sendAttributesUpdatedNotification": false,
+          "updateAttributesOnlyOnValueChange": true
+        },
+        "additionalInfo": {
+          "layoutX": 825,
+          "layoutY": 52
+        }
+      },
+      {
+        "type": "org.thingsboard.rule.engine.filter.TbMsgTypeSwitchNode",
+        "name": "Message Type Switch",
+        "debugMode": true,
+        "singletonMode": false,
+        "queueName": null,
+        "configurationVersion": 0,
+        "configuration": {
+          "version": 0
+        },
+        "additionalInfo": {
+          "description": null,
+          "layoutX": 347,
+          "layoutY": 149
+        }
+      },
+      {
+        "type": "org.thingsboard.rule.engine.action.TbLogNode",
+        "name": "Log RPC from Device",
+        "debugMode": false,
+        "singletonMode": false,
+        "queueName": null,
+        "configurationVersion": 0,
+        "configuration": {
+          "scriptLang": "TBEL",
+          "jsScript": "return '\\nIncoming message:\\n' + JSON.stringify(msg) + '\\nIncoming metadata:\\n' + JSON.stringify(metadata);",
+          "tbelScript": "   return '\\nIncoming message:\\n' + JSON.stringify(msg) + '\\nIncoming metadata:\\n' + JSON.stringify(metadata);"
+        },
+        "additionalInfo": {
+          "description": null,
+          "layoutX": 1054,
+          "layoutY": 722
+        }
+      },
+      {
+        "type": "org.thingsboard.rule.engine.action.TbLogNode",
+        "name": "Log Other",
+        "debugMode": false,
+        "singletonMode": false,
+        "queueName": null,
+        "configurationVersion": 0,
+        "configuration": {
+          "scriptLang": "TBEL",
+          "jsScript": "return '\\nIncoming message:\\n' + JSON.stringify(msg) + '\\nIncoming metadata:\\n' + JSON.stringify(metadata);",
+          "tbelScript": "return '\\nIncoming message:\\n' + JSON.stringify(msg) + '\\nIncoming metadata:\\n' + JSON.stringify(metadata);"
+        },
+        "additionalInfo": {
+          "layoutX": 688,
+          "layoutY": 513
+        }
+      },
+      {
+        "type": "org.thingsboard.rule.engine.rpc.TbSendRPCRequestNode",
+        "name": "RPC Call Request",
+        "debugMode": false,
+        "singletonMode": false,
+        "queueName": null,
+        "configurationVersion": 0,
+        "configuration": {
+          "timeoutInSeconds": 60
+        },
+        "additionalInfo": {
+          "layoutX": 531,
+          "layoutY": 607
+        }
+      },
+      {
+        "type": "org.thingsboard.rule.engine.profile.TbDeviceProfileNode",
+        "name": "Device Profile Node",
+        "debugMode": true,
+        "singletonMode": false,
+        "queueName": null,
+        "configurationVersion": 1,
+        "configuration": {
+          "persistAlarmRulesState": false,
+          "fetchAlarmRulesStateOnStart": false
+        },
+        "additionalInfo": {
+          "description": "Process incoming messages from devices with the alarm rules defined in the device profile. Dispatch all incoming messages with \"Success\" relation type.",
+          "layoutX": 204,
+          "layoutY": 240
+        }
+      },
+      {
+        "type": "org.thingsboard.rule.engine.filter.TbJsFilterNode",
+        "name": "Filter getCurrentTemperature RPC",
+        "debugMode": true,
+        "singletonMode": false,
+        "queueName": null,
+        "configurationVersion": 0,
+        "configuration": {
+          "scriptLang": "TBEL",
+          "jsScript": "return msg.temperature > 20;",
+          "tbelScript": "   return msg.method == \"getCurrentTemperature\";"
+        },
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 871,
+          "layoutY": 256
+        }
+      },
+      {
+        "type": "org.thingsboard.rule.engine.flow.TbRuleChainInputNode",
+        "name": "To Related thermostat temperature",
+        "debugMode": false,
+        "singletonMode": false,
+        "queueName": null,
+        "configurationVersion": 1,
+        "configuration": {
+          "forwardMsgToDefaultRuleChain": false,
+          "ruleChainId": "719aef50-c2f5-11ef-bd0f-1701d435a72a"
+        },
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 1168,
+          "layoutY": 226
+        }
+      },
+      {
+        "type": "org.thingsboard.rule.engine.filter.TbJsFilterNode",
+        "name": "Filter getCurrentLight RPC",
+        "debugMode": true,
+        "singletonMode": false,
+        "queueName": null,
+        "configurationVersion": 0,
+        "configuration": {
+          "scriptLang": "TBEL",
+          "jsScript": "return msg.temperature > 20;",
+          "tbelScript": "   return msg.method == \"getCurrentLight\";"
+        },
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 993,
+          "layoutY": 396
+        }
+      },
+      {
+        "type": "org.thingsboard.rule.engine.filter.TbJsFilterNode",
+        "name": "Filter getCurrentHumidity RPC",
+        "debugMode": true,
+        "singletonMode": false,
+        "queueName": null,
+        "configurationVersion": 0,
+        "configuration": {
+          "scriptLang": "TBEL",
+          "jsScript": "return msg.temperature > 20;",
+          "tbelScript": "   return msg.method == \"getCurrentHumidity\";"
+        },
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 1072,
+          "layoutY": 581
+        }
+      },
+      {
+        "type": "org.thingsboard.rule.engine.metadata.TbGetRelatedAttributeNode",
+        "name": "light",
+        "debugMode": true,
+        "singletonMode": false,
+        "queueName": null,
+        "configurationVersion": 1,
+        "configuration": {
+          "relationsQuery": {
+            "fetchLastLevelOnly": false,
+            "direction": "FROM",
+            "maxLevel": 1,
+            "filters": [
+              {
+                "relationType": "light",
+                "entityTypes": [
+                  "DEVICE"
+                ]
+              }
+            ]
+          },
+          "dataToFetch": "LATEST_TELEMETRY",
+          "fetchTo": "METADATA",
+          "dataMapping": {
+            "light": "data"
+          }
+        },
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 1297,
+          "layoutY": 311
+        }
+      },
+      {
+        "type": "org.thingsboard.rule.engine.transform.TbTransformMsgNode",
+        "name": "script",
+        "debugMode": true,
+        "singletonMode": false,
+        "queueName": null,
+        "configurationVersion": 0,
+        "configuration": {
+          "scriptLang": "JS",
+          "jsScript": "   return {\n       msg: {\n           \"light\": metadata.data\n       },\n       metadata: metadata,\n       msgType: msgType\n   };",
+          "tbelScript": "   return {\n       msg: {\n           \"light\": metadata.data\n       },\n       metadata: metadata,\n       msgType: msgType\n   };"
+        },
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 1397,
+          "layoutY": 126
+        }
+      },
+      {
+        "type": "org.thingsboard.rule.engine.rpc.TbSendRPCReplyNode",
+        "name": "rpc reply",
+        "debugMode": true,
+        "singletonMode": false,
+        "queueName": null,
+        "configurationVersion": 0,
+        "configuration": {
+          "serviceIdMetaDataAttribute": "serviceId",
+          "sessionIdMetaDataAttribute": "sessionId",
+          "requestIdMetaDataAttribute": "requestId"
+        },
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 2071,
+          "layoutY": 80
+        }
+      },
+      {
+        "type": "org.thingsboard.rule.engine.metadata.TbGetRelatedAttributeNode",
+        "name": "humidity",
+        "debugMode": true,
+        "singletonMode": false,
+        "queueName": null,
+        "configurationVersion": 1,
+        "configuration": {
+          "relationsQuery": {
+            "fetchLastLevelOnly": false,
+            "direction": "FROM",
+            "maxLevel": 1,
+            "filters": [
+              {
+                "relationType": "light",
+                "entityTypes": [
+                  "DEVICE"
+                ]
+              }
+            ]
+          },
+          "dataToFetch": "LATEST_TELEMETRY",
+          "fetchTo": "METADATA",
+          "dataMapping": {
+            "humidity": "data"
+          }
+        },
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 1352,
+          "layoutY": 495
+        }
+      },
+      {
+        "type": "org.thingsboard.rule.engine.transform.TbTransformMsgNode",
+        "name": "script",
+        "debugMode": true,
+        "singletonMode": false,
+        "queueName": null,
+        "configurationVersion": 0,
+        "configuration": {
+          "scriptLang": "JS",
+          "jsScript": "   return {\n       msg: {\n           \"humidity\": metadata.data\n       },\n       metadata: metadata,\n       msgType: msgType\n   };",
+          "tbelScript": "   return {\n       msg: {\n           \"humidity\": metadata.data\n       },\n       metadata: metadata,\n       msgType: msgType\n   };"
+        },
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 1281,
+          "layoutY": 658
+        }
+      },
+      {
+        "type": "org.thingsboard.rule.engine.rpc.TbSendRPCReplyNode",
+        "name": "rpc reply",
+        "debugMode": false,
+        "singletonMode": false,
+        "queueName": null,
+        "configurationVersion": 0,
+        "configuration": {
+          "serviceIdMetaDataAttribute": "serviceId",
+          "sessionIdMetaDataAttribute": "sessionId",
+          "requestIdMetaDataAttribute": "requestId"
+        },
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 1993,
+          "layoutY": 609
+        }
+      },
+      {
+        "type": "org.thingsboard.rule.engine.filter.TbJsFilterNode",
+        "name": "script",
+        "debugMode": true,
+        "singletonMode": false,
+        "queueName": null,
+        "configurationVersion": 0,
+        "configuration": {
+          "scriptLang": "JS",
+          "jsScript": "return msg.light >= 25",
+          "tbelScript": "return msg.light >= 25"
+        },
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 1597,
+          "layoutY": 256
+        }
+      },
+      {
+        "type": "org.thingsboard.rule.engine.rpc.TbSendRPCReplyNode",
+        "name": "rpc reply",
+        "debugMode": true,
+        "singletonMode": false,
+        "queueName": null,
+        "configurationVersion": 0,
+        "configuration": {
+          "serviceIdMetaDataAttribute": "serviceId",
+          "sessionIdMetaDataAttribute": "sessionId",
+          "requestIdMetaDataAttribute": "requestId"
+        },
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 2041,
+          "layoutY": 417
+        }
+      },
+      {
+        "type": "org.thingsboard.rule.engine.transform.TbTransformMsgNode",
+        "name": "on",
+        "debugMode": true,
+        "singletonMode": false,
+        "queueName": null,
+        "configurationVersion": 0,
+        "configuration": {
+          "scriptLang": "TBEL",
+          "jsScript": "// Tạo message mới\r\nvar customMessage = {\r\n        \"action\": \"on\"\r\n};\r\n\r\nreturn { msg: customMessage};\r\n",
+          "tbelScript": "// Tạo message mới\r\nvar customMessage = {\r\n        \"action\": \"on\"\r\n};\r\n\r\nreturn { msg: customMessage};\r\n"
+        },
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 1740,
+          "layoutY": 414
+        }
+      },
+      {
+        "type": "org.thingsboard.rule.engine.transform.TbTransformMsgNode",
+        "name": "off",
+        "debugMode": true,
+        "singletonMode": false,
+        "queueName": null,
+        "configurationVersion": 0,
+        "configuration": {
+          "scriptLang": "TBEL",
+          "jsScript": "// Tạo message mới\r\nvar customMessage = {\r\n        \"action\": \"off\"\r\n};\r\n\r\nreturn { msg: customMessage};\r\n",
+          "tbelScript": "// Tạo message mới\r\nvar customMessage = {\r\n        \"action\": \"off\"\r\n};\r\n\r\nreturn { msg: customMessage};\r\n"
+        },
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 1761,
+          "layoutY": 77
+        }
+      },
+      {
+        "type": "org.thingsboard.rule.engine.filter.TbJsFilterNode",
+        "name": "script",
+        "debugMode": true,
+        "singletonMode": false,
+        "queueName": null,
+        "configurationVersion": 0,
+        "configuration": {
+          "scriptLang": "JS",
+          "jsScript": "return msg.humidity >= 50;",
+          "tbelScript": "return msg.humidity >= 50;"
+        },
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 1343,
+          "layoutY": 803
+        }
+      },
+      {
+        "type": "org.thingsboard.rule.engine.transform.TbTransformMsgNode",
+        "name": "off",
+        "debugMode": true,
+        "singletonMode": false,
+        "queueName": null,
+        "configurationVersion": 0,
+        "configuration": {
+          "scriptLang": "JS",
+          "jsScript": "// Tạo message mới\r\nvar customMessage = {\r\n        \"turn\": \"off\"\r\n};\r\n\r\nreturn { msg: customMessage};\r\n",
+          "tbelScript": "// Tạo message mới\r\nvar customMessage = {\r\n        \"turn\": \"off\"\r\n};\r\n\r\nreturn { msg: customMessage};\r\n"
+        },
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 1519,
+          "layoutY": 686
+        }
+      },
+      {
+        "type": "org.thingsboard.rule.engine.transform.TbTransformMsgNode",
+        "name": "on",
+        "debugMode": true,
+        "singletonMode": false,
+        "queueName": null,
+        "configurationVersion": 0,
+        "configuration": {
+          "scriptLang": "JS",
+          "jsScript": "// Tạo message mới\r\nvar customMessage = {\r\n        \"turn\": \"on\"\r\n};\r\n\r\nreturn { msg: customMessage};\r\n",
+          "tbelScript": "// Tạo message mới\r\nvar customMessage = {\r\n        \"turn\": \"on\"\r\n};\r\n\r\nreturn { msg: customMessage};\r\n"
+        },
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 1444,
+          "layoutY": 978
+        }
+      },
+      {
+        "type": "org.thingsboard.rule.engine.rpc.TbSendRPCReplyNode",
+        "name": "rpc reply",
+        "debugMode": true,
+        "singletonMode": false,
+        "queueName": null,
+        "configurationVersion": 0,
+        "configuration": {
+          "serviceIdMetaDataAttribute": "serviceId",
+          "sessionIdMetaDataAttribute": "sessionId",
+          "requestIdMetaDataAttribute": "requestId"
+        },
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 1786,
+          "layoutY": 687
+        }
+      },
+      {
+        "type": "org.thingsboard.rule.engine.rpc.TbSendRPCReplyNode",
+        "name": "rpc reply",
+        "debugMode": true,
+        "singletonMode": false,
+        "queueName": null,
+        "configurationVersion": 0,
+        "configuration": {
+          "serviceIdMetaDataAttribute": "serviceId",
+          "sessionIdMetaDataAttribute": "sessionId",
+          "requestIdMetaDataAttribute": "requestId"
+        },
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 1723,
+          "layoutY": 884
+        }
+      }
+    ],
+    "connections": [
+      {
+        "fromIndex": 2,
+        "toIndex": 0,
+        "type": "Post telemetry"
+      },
+      {
+        "fromIndex": 2,
+        "toIndex": 1,
+        "type": "Post attributes"
+      },
+      {
+        "fromIndex": 2,
+        "toIndex": 4,
+        "type": "Other"
+      },
+      {
+        "fromIndex": 2,
+        "toIndex": 5,
+        "type": "RPC Request to Device"
+      },
+      {
+        "fromIndex": 2,
+        "toIndex": 7,
+        "type": "RPC Request from Device"
+      },
+      {
+        "fromIndex": 6,
+        "toIndex": 2,
+        "type": "Success"
+      },
+      {
+        "fromIndex": 7,
+        "toIndex": 8,
+        "type": "True"
+      },
+      {
+        "fromIndex": 7,
+        "toIndex": 9,
+        "type": "False"
+      },
+      {
+        "fromIndex": 9,
+        "toIndex": 10,
+        "type": "False"
+      },
+      {
+        "fromIndex": 9,
+        "toIndex": 11,
+        "type": "True"
+      },
+      {
+        "fromIndex": 10,
+        "toIndex": 3,
+        "type": "False"
+      },
+      {
+        "fromIndex": 10,
+        "toIndex": 14,
+        "type": "True"
+      },
+      {
+        "fromIndex": 11,
+        "toIndex": 12,
+        "type": "Success"
+      },
+      {
+        "fromIndex": 12,
+        "toIndex": 17,
+        "type": "Success"
+      },
+      {
+        "fromIndex": 14,
+        "toIndex": 15,
+        "type": "Success"
+      },
+      {
+        "fromIndex": 15,
+        "toIndex": 21,
+        "type": "Success"
+      },
+      {
+        "fromIndex": 17,
+        "toIndex": 19,
+        "type": "False"
+      },
+      {
+        "fromIndex": 17,
+        "toIndex": 20,
+        "type": "True"
+      },
+      {
+        "fromIndex": 19,
+        "toIndex": 18,
+        "type": "Success"
+      },
+      {
+        "fromIndex": 20,
+        "toIndex": 13,
+        "type": "Success"
+      },
+      {
+        "fromIndex": 21,
+        "toIndex": 22,
+        "type": "True"
+      },
+      {
+        "fromIndex": 21,
+        "toIndex": 23,
+        "type": "False"
+      },
+      {
+        "fromIndex": 22,
+        "toIndex": 24,
+        "type": "Success"
+      },
+      {
+        "fromIndex": 23,
+        "toIndex": 25,
+        "type": "Success"
+      }
+    ],
+    "ruleChainConnections": null
+  }
+}
